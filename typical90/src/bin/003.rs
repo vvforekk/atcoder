@@ -1,40 +1,115 @@
-use std::collections::{BinaryHeap, VecDeque};
+//! This solution is created by SaiYS, @awpsyrhy(Twitter)
+#![allow(unused_imports)]
 
-use proconio::marker::Usize1;
-
-const INF: usize = 1 << 20;
-
+// #[fastout]
 fn main() {
-    proconio::input! {
-        n: usize,
-        edges: [(Usize1, Usize1); n - 1]
+    input! {}
+    todo!("You can solve it!")
+}
+
+use itertools::{iproduct, izip, Itertools};
+use itertools_num::ItertoolsNum;
+use maplit::{btreemap, btreeset, hashmap, hashset};
+use num::{pow, BigInt, Bounded, Complex, Integer, One, Zero};
+use proconio::{
+    fastout, input,
+    marker::{Bytes, Chars, Isize1, Usize1},
+};
+use rand::{random, rngs::SmallRng, Rng};
+use std::{
+    char::from_digit,
+    cmp::{max, min},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
+    convert::{From, Into},
+    str::FromStr,
+    string::ToString,
+};
+
+use tools::{yn, Visualize, YN};
+pub mod tools {
+    use itertools::Itertools;
+    pub fn yn(flag: bool) {
+        println!("{}", if flag { "Yes" } else { "No" });
     }
 
-    let mut g = vec![Vec::new(); n];
-    let mut c = vec![0; n];
-    for (a, b) in edges {
-        g[a].push(b);
-        g[b].push(a);
-        c[a] += 1;
-        c[b] += 1;
+    #[allow(non_snake_case)]
+    pub fn YN(flag: bool) {
+        println!("{}", if flag { "YES" } else { "NO" });
     }
-    let g = g;
-    let start = c.into_iter().filter(|&x| x == 1).next().unwrap();
-    let mut d = vec![INF; n];
-    d[start] = 0;
-    let mut heap = VecDeque::new();
-    for &one in g[start].iter() {
-        heap.push_back((start, one));
-        d[one] = 1;
-    }
-    while let Some((cur, cost)) = heap.pop_front() {
-        let mut i = 0;
-        for &next in g[cur].iter() {
-            if cost + 1 < d[next] {
-                let new_cost = if i == 0 { cost + 1 } else { 1 };
-                d[next] = new_cost;
-                heap.push_back((next, new_cost));
-            }
+
+    pub trait Visualize {
+        fn visualize(&self, split: &str);
+        fn continuous(&self) {
+            self.visualize("");
+        }
+        fn spaces(&self) {
+            self.visualize(" ");
+        }
+        fn lines(&self) {
+            self.visualize("\n");
         }
     }
+
+    macro_rules! impl_vis_for_sized {
+        ($($t:ty),+) => {
+            $(
+                impl Visualize for $t {
+                    fn visualize(&self, _split: &str) {
+                        print!("{}", self);
+                    }
+                }
+            )+
+        };
+    }
+
+    impl_vis_for_sized! {
+        usize, u8, u16, u32, u64, u128,
+        isize, i8, i16, i32, i64, i128,
+        String, &str, char
+    }
+
+    impl<T: std::fmt::Display> Visualize for [T] {
+        fn visualize(&self, split: &str) {
+            print!("{}", self.iter().join(split));
+        }
+    }
+
+    #[macro_export]
+    macro_rules! vis {
+        // end
+        () => {
+            println!();
+        };
+
+        // last element + trailing pattern
+        ($last:expr ;) => {
+            $last.lines();
+            vis!()
+        };
+        ($last:expr =>) => {
+            $last.continuous();
+            vis!();
+        };
+        ($last:expr $(,)?) => {
+            $last.spaces();
+            vis!();
+        };
+
+        // get first element and pass rest
+        ($first:expr; $($rest:tt)*) => {
+            $first.lines();
+            println!();
+            vis!($($rest)*);
+        };
+        ($first:expr => $($rest:tt)*) => {
+            $first.continuous();
+            vis!($($rest)*);
+        };
+        ($first:expr, $($rest:tt)*) => {
+            $first.spaces();
+            print!(" ");
+            vis!($($rest)*);
+        };
+    }
 }
+
