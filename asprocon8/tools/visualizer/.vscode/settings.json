@@ -1,9 +1,0 @@
-{
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "cSpell.words": [
-    "chakra",
-    "pixi"
-  ]
-}
