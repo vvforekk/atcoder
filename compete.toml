@@ -60,9 +60,6 @@ use std::{
     usize::MAX,
 };
 
-pub type HashSet<T> = rustc_hash::FxHashSet<T>;
-pub type HashMap<K, V> = rustc_hash::FxHashMap<K, V>;
-
 pub const MOD_1000000007: usize = 1000000007;
 pub const MOD_998244353: usize = 998244353;
 pub const INF: usize = 2000000000;
