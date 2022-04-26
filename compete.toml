@@ -21,8 +21,10 @@ test-suite = "{{ manifest_dir }}/testcases/{{ bin_alias }}.yml"
 #open = '["emacsclient", "-n"] + (.paths | map([.src, .test_suite]) | flatten)'
 
 [template]
-src = '''//! This solution is created by SaiYS, @awpsyrhy(Twitter)
+src = '''//! This solution is created by @awpsyrhy
+//! Source of my library is at https://github.com/SaiYS/sail
 #![allow(unused_imports)]
+#![warn(clippy::dbg_macro)]
 
 // #[fastout]
 fn main() {
@@ -30,9 +32,7 @@ fn main() {
     todo!("You can solve it!")
 }
 
-use cmp::{MaxAssign, MinAssign, max, min};
-use itertools_sail::ItertoolsSail as _;
-use vis::{vis, visualize::Visualize, Yn};
+use sail::prelude::*;
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools as _};
@@ -42,9 +42,10 @@ use num::{
     bigint::{BigInt, BigUint, ToBigInt, ToBigUint},
     complex::Complex64,
     integer::{binomial, gcd, gcd_lcm, lcm, multinomial, Integer},
+    rational::Rational64,
     traits::{abs, abs_sub, Bounded, One, Pow, Saturating, Zero},
 };
-use ::proconio::{
+use proconio::{
     fastout, input,
     marker::{Bytes, Chars, Isize1, Usize1},
     source::{auto::AutoSource, line::LineSource, once::OnceSource},
@@ -52,37 +53,18 @@ use ::proconio::{
 use rand::{random, rngs::SmallRng, Rng, SeedableRng, seq::{IteratorRandom, SliceRandom}};
 use std::{
     cmp::{max, min},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, VecDeque},
-    convert::{From, Into},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashSet, HashMap, VecDeque},
     f64::consts::PI,
+    io::{Read as _, Write as _},
     str::FromStr,
     string::ToString,
     usize::MAX,
 };
-
-pub const MOD_1000000007: usize = 1000000007;
-pub const MOD_998244353: usize = 998244353;
-pub const INF: usize = 2000000000;
-pub const FNI: i64 = -2000000000;
-pub const ALPHABET_LARGE: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-pub const ALPHABET_SMALL: &str = "abcdefghijklmnopqrstuvwxyz";
-pub const ADJ4: [(i64, i64); 4] = [(1, 0), (0, 1), (-1, 0), (0, -1)];
-pub const ADJ8: [(i64, i64); 8] = [
-    (1, 0),
-    (1, 1),
-    (0, 1),
-    (-1, 1),
-    (-1, 0),
-    (-1, -1),
-    (0, -1),
-    (1, -1),
-];
-
 '''
 
 [template.new]
 # `edition` for `Cargo.toml`.
-edition = "2018"
+edition = "2021"
 # `profile` for `Cargo.toml`.
 #
 # By setting this, you can run tests with `opt-level=3` while enabling `debug-assertions` and `overflow-checks`.
@@ -91,68 +73,47 @@ edition = "2018"
 #opt-level = 3
 #'''
 dependencies = '''
-num = "=0.2.1"
-num-bigint = "=0.2.6"
-num-complex = "=0.2.4"
-num-integer = "=0.1.42"
-num-iter = "=0.1.40"
-num-rational = "=0.2.4"
-num-traits = "=0.2.11"
-num-derive = "=0.3.0"
-ndarray = "=0.13.0"
-nalgebra = "=0.20.0"
-alga = "=0.9.3"
-libm = "=0.2.1"
-rand = { version = "=0.7.3", features = ["small_rng"] }
-getrandom = "=0.1.14"
-rand_chacha = "=0.2.2"
-rand_core = "=0.5.1"
-rand_hc = "=0.2.0"
-rand_pcg = "=0.2.1"
-rand_distr = "=0.2.2"
-petgraph = "=0.5.0"
-indexmap = "=1.3.2"
-regex = "=1.3.6"
-lazy_static = "=1.4.0"
-ordered-float = "=1.0.2"
-ascii = "=1.0.0"
-permutohedron = "=0.2.4"
-superslice = "=1.0.0"
-itertools = "=0.9.0"
-itertools-num = "=0.1.3"
-maplit = "=1.0.2"
-either = "=1.5.3"
-im-rc = "=14.3.0"
-fixedbitset = "=0.2.0"
-# fixedbitset = "=0.4.1"
-bitset-fixed = "=0.1.0"
-# proconio = { version = "=0.3.6", features = ["derive"] }
-proconio = { version = "=0.4.3", features = ["derive"] }
-text_io = "=0.1.8"
-whiteread = "=0.5.0"
-rustc-hash = "=1.1.0"
-smallvec = "=1.2.0"
+num = "0.2.1"
+num-bigint = "0.2.6"
+num-complex = "0.2.4"
+num-integer = "0.1.42"
+num-iter = "0.1.40"
+num-rational = "0.2.4"
+num-traits = "0.2.11"
+num-derive = "0.3.0"
+# ndarray = "0.13.0"
+# nalgebra = "0.20.0"
+# alga = "0.9.3"
+# libm = "0.2.1"
+rand = { version = "0.7.3", features = ["small_rng"] }
+getrandom = "0.1.14"
+rand_chacha = "0.2.2"
+rand_core = "0.5.1"
+rand_hc = "0.2.0"
+rand_pcg = "0.2.1"
+rand_distr = "0.2.2"
+# petgraph = "0.5.0"
+indexmap = "1.3.2"
+regex = "1.3.6"
+lazy_static = "1.4.0"
+ordered-float = "1.0.2"
+ascii = "1.0.0"
+permutohedron = "0.2.4"
+superslice = "1.0.0"
+itertools = "0.9.0"
+itertools-num = "0.1.3"
+maplit = "1.0.2"
+either = "1.5.3"
+im-rc = "14.3.0"
+# fixedbitset = "0.2.0"
+# bitset-fixed = "0.1.0"
+proconio = { version = "0.4.3", features = ["derive"] }
+# text_io = "0.1.8"
+# whiteread = "0.5.0"
+rustc-hash = "1.1.0"
+# smallvec = "1.2.0"
 
-algebraic_structures = { path = "/Users/roku/room/comp/sail/crates/algebraic_structures" }
-bitset = { path = "/Users/roku/room/comp/sail/crates/bitset" }
-cmp = { path = "/Users/roku/room/comp/sail/crates/cmp" }
-fenwick_tree = { path = "/Users/roku/room/comp/sail/crates/fenwick_tree" }
-fisher_yates = { path = "/Users/roku/room/comp/sail/crates/fisher_yates" }
-graph = { path = "/Users/roku/room/comp/sail/crates/graph" }
-itertools_sail = { path = "/Users/roku/room/comp/sail/crates/itertools_sail" }
-modint = { path = "/Users/roku/room/comp/sail/crates/modint" }
-prime = { path = "/Users/roku/room/comp/sail/crates/prime" }
-rolling_hash = { path = "/Users/roku/room/comp/sail/crates/rolling_hash" }
-sample_generater = { path = "/Users/roku/room/comp/sail/crates/sample_generater" }
-segment_tree = { path = "/Users/roku/room/comp/sail/crates/segment_tree" }
-sparse_table = { path = "/Users/roku/room/comp/sail/crates/sparse_table" }
-suffix_array = { path = "/Users/roku/room/comp/sail/crates/suffix_array" }
-union_find = { path = "/Users/roku/room/comp/sail/crates/union_find" }
-util = { path = "/Users/roku/room/comp/sail/crates/util" }
-vis = { path = "/Users/roku/room/comp/sail/crates/vis" }
-'''
-dev-dependencies = '''
-atcoder-202004-lock = { git = "https://github.com/qryxip/atcoder-202004-lock" }
+sail = { path = "/Users/roku/room/comp/sail" }
 '''
 
 [template.new.copy-files]
@@ -199,7 +160,7 @@ path = "./{{ contest }}"
 
 [test]
 # Toolchain for the test. (optional)
-toolchain = "1.42.0"
+# toolchain = "1.42.0"
 # Profile for `cargo build`. ("dev" | "release")
 #
 # Defaults to `"dev"`.
@@ -207,18 +168,19 @@ toolchain = "1.42.0"
 
 [submit.transpile]
 kind = "command"
-args = [
-    "cargo",
-    "equip",
-    "--exclude-atcoder-crates",
-    "--remove",
-    "docs",
-    # "--minify",
-    # "libs",
-    "--mine",
-    "github.com/SaiYS",
-    # "--no-check",
-    "--bin",
-    "{{ bin_name }}",
-]
+args = ["cargo", "executable-payload", "--bin", "{{ bin_name }}"]
+# args = [
+#     "cargo",
+#     "equip",
+#     "--exclude-atcoder-crates",
+#     "--remove",
+#     "docs",
+#     # "--minify",
+#     # "libs",
+#     "--mine",
+#     "github.com/SaiYS",
+#     # "--no-check",
+#     "--bin",
+#     "{{ bin_name }}",
+# ]
 #language_id = ""

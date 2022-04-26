@@ -1,2 +1,8 @@
 [build]
 target-dir = "target"
+
+[profile.release]
+strip = true
+
+[target.x86_64-unknown-linux-musl]
+linker = "rust-lld"
