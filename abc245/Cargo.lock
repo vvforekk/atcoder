@@ -3,9 +3,10 @@
 version = 3
 
 [[package]]
-name = "abc247"
+name = "abc245"
 version = "0.1.0"
 dependencies = [
+ "ac-library-rs",
  "ascii",
  "either",
  "getrandom",
@@ -37,6 +38,11 @@ dependencies = [
  "sail",
  "superslice",
 ]
+
+[[package]]
+name = "ac-library-rs"
+version = "0.1.0"
+source = "git+https://github.com/rust-lang-ja/ac-library-rs#d2b35ac542160c963d49d180194e77fc6a03fd7d"
 
 [[package]]
 name = "accumulate"
@@ -205,9 +211,9 @@ checksum = "21a41fed9d98f27ab1c6d161da622a4fa35e8a54a8adc24bbf3ddd0ef70b0e50"
 
 [[package]]
 name = "libm"
-version = "0.2.2"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33a33a362ce288760ec6a508b94caaec573ae7d3bbbd91b87aa0bad4456839db"
+checksum = "c7d73b3f436185384286bd8098d17ec07c9a7d2388a6599f824d8502b529702a"
 
 [[package]]
 name = "maplit"
