@@ -5,11 +5,32 @@
 
 // #[fastout]
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize,
+        p: [Usize1; n],
+        q: [Usize1; n],
+    }
+
+    let mut uf = UnionFind::new(n);
+    for i in 0..n {
+        uf.unite(p[i], q[i]);
+    }
+
+    let ans = uf
+        .trees()
+        .into_values()
+        .map(|x| {
+            let m: ModInt998244353 = x.len().into();
+            if m.get().is_even() {
+                2usize.into()
+            } else {
+                m
+            }
+        })
+        .sum::<ModInt998244353>();
 }
 
-use sail::prelude::*;
+use sail::{graph::union_find::UnionFind, prelude::*};
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools as _};
@@ -27,10 +48,15 @@ use proconio::{
     marker::{Bytes, Chars, Isize1, Usize1},
     source::{auto::AutoSource, line::LineSource, once::OnceSource},
 };
-use rand::{random, rngs::SmallRng, Rng, SeedableRng, seq::{IteratorRandom, SliceRandom}};
+use rand::{
+    random,
+    rngs::SmallRng,
+    seq::{IteratorRandom, SliceRandom},
+    Rng, SeedableRng,
+};
 use std::{
     cmp::{max, min},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashSet, HashMap, VecDeque},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
     f64::consts::PI,
     io::{Read as _, Write as _},
     str::FromStr,

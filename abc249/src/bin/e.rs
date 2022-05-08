@@ -24,7 +24,7 @@ fn main() {
         }
     }
 
-    dbg!(&dp);
+    // dbg!(&dp);
 
     let ans = dp.iter().map(|x| x[n]).fold(0, |mut acc, x| {
         acc += x;

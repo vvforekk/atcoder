@@ -5,11 +5,30 @@
 
 // #[fastout]
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize,
+        x: i64, y: i64,
+        a: [i64; n]
+    }
+
+    let stmax = SparseTable::<Max<i64>>::from(a.clone());
+    let stmin = SparseTable::<Min<i64>>::from(a.clone());
+
+    let mut ans = 0;
+    let s = (0..=n).collect_vec();
+    for i in 0..n {
+        let r = s[i + 1..n].equal_range_by_key(&(x, y), |&f| (stmax.range(i..f), stmin.range(i..f)));
+        dbg!(&r);
+        ans += r.end - r.start;
+    }
+
+    vis!(ans);
 }
 
-use sail::prelude::*;
+use sail::{
+    prelude::*,
+    sparse_table::{Max, Min, SparseTable},
+};
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools as _};
@@ -27,13 +46,19 @@ use proconio::{
     marker::{Bytes, Chars, Isize1, Usize1},
     source::{auto::AutoSource, line::LineSource, once::OnceSource},
 };
-use rand::{random, rngs::SmallRng, Rng, SeedableRng, seq::{IteratorRandom, SliceRandom}};
+use rand::{
+    random,
+    rngs::SmallRng,
+    seq::{IteratorRandom, SliceRandom},
+    Rng, SeedableRng,
+};
 use std::{
     cmp::{max, min},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashSet, HashMap, VecDeque},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
     f64::consts::PI,
     io::{Read as _, Write as _},
     str::FromStr,
     string::ToString,
     usize::MAX,
 };
+use superslice::Ext;

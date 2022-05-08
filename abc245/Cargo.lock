@@ -140,6 +140,11 @@ dependencies = [
 [[package]]
 name = "graph"
 version = "0.1.0"
+dependencies = [
+ "itertools",
+ "num-traits",
+ "segment_tree",
+]
 
 [[package]]
 name = "im-rc"
@@ -517,7 +522,6 @@ dependencies = [
  "sqrt_decomposition",
  "suffix_array",
  "timer",
- "union_find",
 ]
 
 [[package]]
@@ -615,13 +619,6 @@ name = "unicode-xid"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "826e7639553986605ec5979c7dd957c7895e93eabed50ab2ffa7f6128a75097c"
-
-[[package]]
-name = "union_find"
-version = "0.1.0"
-dependencies = [
- "itertools",
-]
 
 [[package]]
 name = "util"

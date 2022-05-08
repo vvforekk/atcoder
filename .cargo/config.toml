@@ -1,5 +1,6 @@
 [build]
 target-dir = "target"
+rustc-wrapper = "/usr/local/bin/sccache"
 
 [profile.release]
 strip = true
