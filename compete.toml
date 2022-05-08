@@ -139,7 +139,7 @@ platform = "atcoder"
 #
 # - `contest`:      Contest ID. **May be nil**
 # - `package_name`: Package name
-path = "./{{ contest }}"
+path = "./contests/{{ contest }}"
 
 #[new]
 #kind = "oj-api"
