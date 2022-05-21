@@ -6,15 +6,33 @@
 // #[fastout]
 fn main() {
     input! {
-        m: usize,
-        e: [(Usize1, Usize1); m],
-        p: [Usize1; 8]
+        n: usize,
+        s: [Chars; n]
     }
 
-    
+    let mut a = vec![INF as usize; 10];
+
+    for i in 0..10 {
+        let mut used = vec![false; n];
+        for t in 0.. {
+            for j in (0..n).filter(|&x| !used[x]).collect_vec() {
+                if s[j][t % 10].to_digit(10).unwrap() as usize == i {
+                    used[j] = true;
+                    break;
+                }
+            }
+            if used.iter().all(|&x| x) {
+                a[i] = t;
+                break;
+            }
+        }
+    }
+
+    let ans = a.into_iter().min().unwrap();
+    vis!(ans);
 }
 
-use sail::{graph::union_find::UnionFind, prelude::*};
+use sail::prelude::*;
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools};

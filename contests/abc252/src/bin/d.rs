@@ -6,15 +6,28 @@
 // #[fastout]
 fn main() {
     input! {
-        m: usize,
-        e: [(Usize1, Usize1); m],
-        p: [Usize1; 8]
+        n: usize,
+        a: [usize; n]
     }
 
-    
+    let b = a.iter().copied().counts();
+
+    let mut s = 0usize;
+    for (_, v) in b {
+        if v >= 2 {
+            s += binomial(v, 2) * (n - v);
+        }
+
+        if v >= 3 {
+            s += binomial(v, 3);
+        }
+    }
+
+    let ans = binomial(n, 3) - s;
+    vis!(ans);
 }
 
-use sail::{graph::union_find::UnionFind, prelude::*};
+use sail::prelude::*;
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools};

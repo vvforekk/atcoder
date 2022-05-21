@@ -6,15 +6,17 @@
 // #[fastout]
 fn main() {
     input! {
-        m: usize,
-        e: [(Usize1, Usize1); m],
-        p: [Usize1; 8]
+        n: usize, k: usize,
+        a: [usize; n],
+        b: [Usize1; k]
     }
 
-    
+    let m = a.iter().max().unwrap();
+    let b = b.into_iter().collect::<HashSet<_>>();
+    Yn(a.iter().positions(|x| x == m).any(|i| b.contains(&i)));
 }
 
-use sail::{graph::union_find::UnionFind, prelude::*};
+use sail::prelude::*;
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools};

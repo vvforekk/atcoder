@@ -6,15 +6,28 @@
 // #[fastout]
 fn main() {
     input! {
-        m: usize,
-        e: [(Usize1, Usize1); m],
-        p: [Usize1; 8]
+        n: usize, l: usize,
+        a: [usize; n]
     }
 
-    
+    let mut h: BinaryHeap<_> = a.iter().copied().map(|x| Reverse(x)).collect();
+    let s = a.iter().sum::<usize>();
+    if s != l {
+        h.push(Reverse(l - s));
+    }
+    let mut ans = 0;
+    while h.len() >= 2 {
+        let x = h.pop().unwrap().0;
+        let y = h.pop().unwrap().0;
+
+        h.push(Reverse(x + y));
+        ans += x + y;
+    }
+
+    vis!(ans);
 }
 
-use sail::{graph::union_find::UnionFind, prelude::*};
+use sail::prelude::*;
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools};

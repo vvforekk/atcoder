@@ -5,16 +5,11 @@
 
 // #[fastout]
 fn main() {
-    input! {
-        m: usize,
-        e: [(Usize1, Usize1); m],
-        p: [Usize1; 8]
-    }
-
-    
+    input! {}
+    todo!("You can solve it!")
 }
 
-use sail::{graph::union_find::UnionFind, prelude::*};
+use sail::prelude::*;
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools};
