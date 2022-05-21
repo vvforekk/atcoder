@@ -6,37 +6,52 @@
 // #[fastout]
 fn main() {
     input! {
-        n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        n: usize, q: usize,
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
+    let mut prev = vec![None; n];
+    let mut succ = vec![None; n];
+    for _ in 0..q {
+        input! {
+            t: usize
+        }
 
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
-
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
+        match t {
+            1 => {
+                input! {
+                    x: Usize1, y: Usize1
                 }
+                prev[y] = Some(x);
+                succ[x] = Some(y);
+
             }
+            2 => {
+                input! {
+                    x: Usize1, y: Usize1
+                }
+                prev[y] = None;
+                succ[x] = None;
+            }
+            3 => {
+                input! {
+                    x: Usize1
+                }
+                let mut cur = x;
+                while let Some(l) = prev[cur] {
+                    cur = l;
+                }
+
+                let mut ans = vec![cur + 1];
+                while let Some(l) = succ[cur] {
+                    ans.push(l + 1);
+                    cur = l;
+                }
+
+                vis!(ans.len(), ans);
+            }
+            _ => unreachable!(),
         }
     }
-
-    vis!(ans.get());
 }
 
 use sail::prelude::*;
@@ -65,7 +80,7 @@ use rand::{
 };
 use std::{
     cmp::{max, min, Reverse},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque},
     f64::consts::PI,
     io::{Read, Write},
     str::FromStr,

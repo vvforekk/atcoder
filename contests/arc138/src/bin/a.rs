@@ -6,37 +6,29 @@
 // #[fastout]
 fn main() {
     input! {
-        n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        n: usize, k: usize,
+        p: [usize; n],
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
+    let a = p[..k].to_vec();
+    let b = p
+        .iter()
+        .copied()
+        .skip(k)
+        .enumerate()
+        .map(|x| (x.1, x.0))
+        .sorted()
+        .collect_vec();
 
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
-
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
-                }
-            }
+    let mut ans = INF as usize;
+    for p in 0..k {
+        let q = b.upper_bound_by_key(&a[p], |x| x.0);
+        if q != b.len() {
+            ans = min(ans, k - p + q);
         }
     }
 
-    vis!(ans.get());
+    polar_question(ans == INF as usize, "-1", ans.to_string().as_str());
 }
 
 use sail::prelude::*;
@@ -71,3 +63,4 @@ use std::{
     str::FromStr,
     string::ToString,
 };
+use superslice::Ext;

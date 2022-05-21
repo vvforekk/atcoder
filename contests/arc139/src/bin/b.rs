@@ -6,37 +6,21 @@
 // #[fastout]
 fn main() {
     input! {
-        n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        t: usize
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
-
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
-
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
-                }
-            }
+    for _ in 0..t {
+        input! {
+            n: usize, a: usize, b: usize,
+            x: usize, y: usize, z: usize
         }
-    }
 
-    vis!(ans.get());
+        let lcm = lcm(a, b);
+        let m = n / lcm * lcm;
+        dbg!(n, m);
+
+        min!(x * m, y * m / a, z * m / b);
+    }
 }
 
 use sail::prelude::*;
@@ -70,4 +54,5 @@ use std::{
     io::{Read, Write},
     str::FromStr,
     string::ToString,
+    usize,
 };

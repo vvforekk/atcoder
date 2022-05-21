@@ -6,37 +6,26 @@
 // #[fastout]
 fn main() {
     input! {
-        n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        h: usize, w: usize,
+        a: [[usize; w]; h]
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
-
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
-
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
+    for i1 in 0..h {
+        for i2 in 0..h {
+            for j1 in 0..w {
+                for j2 in 0..w {
+                    if i1 < i2 && j1 < j2 {
+                        if a[i1][j1] + a[i2][j2] > a[i1][j2] + a[i2][j1] {
+                            vis!("No");
+                            return;
+                        }
+                    }
                 }
             }
         }
     }
 
-    vis!(ans.get());
+    vis!("Yes");
 }
 
 use sail::prelude::*;

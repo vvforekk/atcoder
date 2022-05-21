@@ -7,36 +7,16 @@
 fn main() {
     input! {
         n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        b: [[usize; m]; n]
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
-
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
-
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
-                }
-            }
-        }
-    }
-
-    vis!(ans.get());
+    let a = b[0][0];
+    // let x = (a - 1) / 7;
+    let y = (a - 1) % 7;
+    Yn(y + m <= 7
+        && (0..n)
+            .map(|i| (0..m).all(|j| b[i][j] == a + i * 7 + j))
+            .all(|f| f));
 }
 
 use sail::prelude::*;

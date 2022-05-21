@@ -6,37 +6,27 @@
 // #[fastout]
 fn main() {
     input! {
-        n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        n: usize, k: usize,
+        s: Chars
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
+    // for fs in (1..=n).filter(|&x| n.is_multiple_of(&x)) {
+    for fs in 1..=n {
+        let mut c = vec![vec![0usize; 26]; fs];
+        for i in 0..n {
+            c[i % fs][(s[i] as u8 - b'a') as usize] += 1;
+        }
 
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
+        let cost = c
+            .into_iter()
+            .map(|t| t.iter().sum::<usize>() - t.iter().max().unwrap())
+            .sum::<usize>();
 
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
-                }
-            }
+        if cost <= k {
+            vis!(fs);
+            return;
         }
     }
-
-    vis!(ans.get());
 }
 
 use sail::prelude::*;

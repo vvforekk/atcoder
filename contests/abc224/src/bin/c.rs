@@ -6,37 +6,42 @@
 // #[fastout]
 fn main() {
     input! {
-        n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        n: usize,
+        p: [(i64, i64); n]
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
-
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
-
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
+    let mut ans = 0usize;
+    for i in 0..n {
+        for j in 0..n {
+            for k in 0..n {
+                if i < j && j < k {
+                    if !linear(p[i], p[j], p[k]) {
+                        ans += 1;
+                    }
                 }
             }
         }
     }
 
-    vis!(ans.get());
+    vis!(ans);
+}
+
+fn linear((x1, y1): (i64, i64), (x2, y2): (i64, i64), (x3, y3): (i64, i64)) -> bool {
+    if (x1, y1) == (x2, y2) || (x2, y2) == (x3, y3) || (x3, y3) == (x1, y1) {
+        true
+    } else {
+        let ax = x1 - x2;
+        let ay = y1 - y2;
+        let bx = x2 - x3;
+        let by = y2 - y3;
+
+        ax * by == bx * ay
+    }
+}
+
+#[test]
+fn feature() {
+    dbg!(linear((0, 0), (1, 1), (2, 2)));
 }
 
 use sail::prelude::*;

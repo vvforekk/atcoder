@@ -6,37 +6,24 @@
 // #[fastout]
 fn main() {
     input! {
-        n: usize, m: usize,
-        e: [(Usize1, Usize1); m]
+        n: usize, p: [(i64, i64); n]
     }
 
-    let mut g = vec![Vec::new(); n];
-    for (u, v) in e {
-        g[u].push(v);
-        g[v].push(u);
-        rest[u] += 1;
-        rest[v] += 1;
-    }
-    let g = g;
-
-    let mut visited = vec![false; n];
-    let mut q = VecDeque::new();
-    let mut ans = ModInt998244353::one();
-
-    for start in 0..n {
-        if !visited[start] {
-            q.push_back(start);
-
-            while let Some(cur) = q.pop_front() {
-                visited[cur] = true;
-                for &next in g[cur].iter().filter(|&&x| !visited[x]).collect_vec() {
-                    q.push_back(next);
-                }
-            }
+    let mut cur = (1, 0);
+    let mut ans = 0usize;
+    for (x, y) in p
+        .into_iter()
+        .sorted_by(|(x1, y1), (x2, y2)| (y1 * (x2 - 1)).cmp(&(y2 * (x1 - 1))))
+    {
+        if (y - 1) * cur.0 >= cur.1 * x {
+            cur = (x - 1, y);
+            ans += 1;
         }
+
+        // dbg!(x, y, cur);
     }
 
-    vis!(ans.get());
+    vis!(ans);
 }
 
 use sail::prelude::*;
@@ -66,7 +53,10 @@ use rand::{
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
-    f64::consts::PI,
+    f64::{
+        consts::{FRAC_2_PI, PI},
+        EPSILON,
+    },
     io::{Read, Write},
     str::FromStr,
     string::ToString,
