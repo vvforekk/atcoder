@@ -1,7 +1,7 @@
 use log::warn;
 use serde::{Deserialize, Serialize};
 
-const CONFIG_PATH: &str = "/Users/roku/room/comp/atcoder/xtasks/atcoder_xtasks.toml";
+const CONFIG_PATH: &str = "/Users/roku/room/comp/atcoder/cargo-acx/cargo-acx.toml";
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Config {

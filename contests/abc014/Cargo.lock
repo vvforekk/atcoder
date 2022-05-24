@@ -105,6 +105,10 @@ name = "cmp"
 version = "0.1.0"
 
 [[package]]
+name = "counter"
+version = "0.1.0"
+
+[[package]]
 name = "either"
 version = "1.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -181,6 +185,7 @@ name = "io"
 version = "0.1.0"
 dependencies = [
  "itertools",
+ "once_cell",
  "proconio",
 ]
 
@@ -327,6 +332,12 @@ dependencies = [
  "autocfg",
  "libm",
 ]
+
+[[package]]
+name = "once_cell"
+version = "1.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7709cef83f0c1f58f666e746a08b21e0085f7440fa6a29cc194d68aac97a4225"
 
 [[package]]
 name = "ordered-float"
@@ -508,6 +519,7 @@ dependencies = [
  "algebraics",
  "bitset",
  "cmp",
+ "counter",
  "fenwick_tree",
  "fisher_yates",
  "graph",

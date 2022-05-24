@@ -2,11 +2,16 @@
 target-dir = "target"
 rustc-wrapper = "/usr/local/bin/sccache"
 
-[profile.release]
-strip = true
-lto = true
-
 [target.x86_64-unknown-linux-musl]
 linker = "rust-lld"
 
 [alias]
+# for cargo-compete
+submit = "compete submit"
+s = "compete submit"
+judge = "compete test"
+j = "compete test"
+
+# for cargo-acx
+clist = "acx clist"
+start = "acx start"

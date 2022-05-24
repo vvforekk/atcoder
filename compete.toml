@@ -63,6 +63,10 @@ edition = "2021"
 profile = '''
 [dev]
 opt-level = 3
+
+[release]
+strip = true
+lto = true
 '''
 dependencies = '''
 num = "0.4.0"

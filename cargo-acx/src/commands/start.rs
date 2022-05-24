@@ -1,19 +1,19 @@
+use crate::contest::Contest;
 use anyhow::{bail, Context};
 use chrono::Local;
 use indicatif::{ProgressBar, ProgressStyle};
 use itertools::Itertools;
 use std::{io::BufRead, path::PathBuf, process::Command, str::FromStr, thread};
-use xtasks::Contest;
 
-fn main() -> anyhow::Result<()> {
-    let config = xtasks::config::read_config()?;
+pub fn start() -> anyhow::Result<()> {
+    let config = crate::config::read_config()?;
 
-    let upcoming_contests = xtasks::get_upcoming_contests()?;
+    let upcoming_contests = crate::contest::get_upcoming_contests()?;
     let next_contest = upcoming_contests
         .first()
         .with_context(|| "No upcoming contests are found.")?;
 
-    xtasks::print_contests(&[next_contest.clone()])?;
+    crate::contest::print_contests(&[next_contest.clone()])?;
 
     let Contest {
         name,
@@ -39,13 +39,12 @@ fn main() -> anyhow::Result<()> {
         while !bar.is_finished() {
             let elapsed = (Local::now() - now).num_seconds() as u64;
             bar.set_position(elapsed);
+            thread::sleep(std::time::Duration::from_secs(1));
             if elapsed > wait_second {
                 bar.finish_with_message("Contest Starts");
             }
         }
     }
-
-    thread::sleep(std::time::Duration::from_secs(1));
 
     if !path.as_path().exists() {
         let out = Command::new("cargo-compete").args(["new", id]).output()?;

@@ -9,8 +9,6 @@ use prettytable::{
 use reqwest::Url;
 use std::str::FromStr;
 
-pub mod config;
-
 #[derive(Debug, Clone)]
 pub struct Contest {
     pub name: String,
