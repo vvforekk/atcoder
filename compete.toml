@@ -26,7 +26,7 @@ src = '''//! This solution is created by @awpsyrhy
 #![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
-pub fn main() {
+fn main() {
     input! {}
     todo!("You can solve it!")
 }
@@ -60,10 +60,10 @@ edition = "2021"
 # `profile` for `Cargo.toml`.
 #
 # By setting this, you can run tests with `opt-level=3` while enabling `debug-assertions` and `overflow-checks`.
-#profile = '''
-#[dev]
-#opt-level = 3
-#'''
+profile = '''
+[dev]
+opt-level = 3
+'''
 dependencies = '''
 num = "0.4.0"
 num-bigint = "0.4.3"
@@ -110,7 +110,7 @@ sail = { path = "./../../../sail" }
 '''
 
 [template.new.copy-files]
-"./template-cargo-lock.toml" = "Cargo.lock"
+"./contest_template/Cargo.lock" = "Cargo.lock"
 
 [new]
 kind = "cargo-compete"
@@ -162,18 +162,4 @@ path = "./contests/{{ contest }}"
 [submit.transpile]
 kind = "command"
 args = ["cargo", "executable-payload", "--bin", "{{ bin_name }}"]
-# args = [
-#     "cargo",
-#     "equip",
-#     "--exclude-atcoder-crates",
-#     "--remove",
-#     "docs",
-#     # "--minify",
-#     # "libs",
-#     "--mine",
-#     "github.com/SaiYS",
-#     # "--no-check",
-#     "--bin",
-#     "{{ bin_name }}",
-# ]
 #language_id = ""

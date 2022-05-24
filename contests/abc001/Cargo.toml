@@ -1,9 +1,32 @@
+[profile.dev]
+opt-level = 3
+
 [package]
-name = "contest_template"
+name = "abc001"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[package.metadata.cargo-compete.bin]
+abc001-a = { alias = "a", problem = "https://atcoder.jp/contests/abc001/tasks/abc001_1" }
+abc001-b = { alias = "b", problem = "https://atcoder.jp/contests/abc001/tasks/abc001_2" }
+abc001-c = { alias = "c", problem = "https://atcoder.jp/contests/abc001/tasks/abc001_3" }
+abc001-d = { alias = "d", problem = "https://atcoder.jp/contests/abc001/tasks/abc001_4" }
+
+[[bin]]
+name = "abc001-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc001-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc001-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc001-d"
+path = "src/bin/d.rs"
 
 [dependencies]
 num = "0.4.0"
@@ -47,5 +70,6 @@ im-rc = "15.0.0"
 # smallvec = "1.2.0"
 
 ac-library-rs = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
-sail = { path = "./../../sail" }
-# sail = { path = "./../../../sail" }
+sail = { path = "./../../../sail" }
+
+[dev-dependencies]
