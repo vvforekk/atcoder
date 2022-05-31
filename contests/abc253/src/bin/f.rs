@@ -3,16 +3,15 @@
 #![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
-pub fn main() {
+fn main() {
     input! {}
     todo!("You can solve it!")
 }
 
-use ac_library_rs::math::{crt, inv_mod, pow_mod};
-use indexmap::{indexmap, indexset, IndexMap, IndexSet};
-use itertools::{chain, iproduct, izip, Itertools as _};
+use sail::prelude::*;
+use itertools::{iproduct, izip, Itertools as _};
 use itertools_num::ItertoolsNum as _;
-use roaring::{RoaringBitmap, RoaringTreemap};
+use maplit::{btreemap, btreeset, convert_args, hashmap, hashset};
 use num::{
     bigint::{BigInt, BigUint, ToBigInt as _, ToBigUint as _},
     complex::Complex64,
@@ -26,7 +25,6 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     thread_rng, Rng, SeedableRng,
 };
-use sail::prelude::*;
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},

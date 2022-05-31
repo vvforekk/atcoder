@@ -33,7 +33,7 @@ pub fn start() -> anyhow::Result<()> {
         bar.set_message(format!("waiting for the {} open", name));
         bar.set_draw_rate(2);
         bar.set_style(
-            ProgressStyle::default_bar().template("[{eta_precise}] {bar:100.green} {msg}"),
+            ProgressStyle::default_bar().template("[{eta_precise}] {bar:50.green} {msg}"),
         );
 
         while !bar.is_finished() {
@@ -86,7 +86,7 @@ fn preogress_bar() {
     let bar = ProgressBar::new(wait_second);
     bar.set_draw_rate(2);
     bar.set_message("waiting for the contest open");
-    bar.set_style(ProgressStyle::default_bar().template("[{eta_precise}] {bar:100.green} {msg}"));
+    bar.set_style(ProgressStyle::default_bar().template("[{eta_precise}] {bar:50.green} {msg}"));
     while !bar.is_finished() {
         let elapsed = (Local::now() - now).num_seconds() as u64;
         bar.set_position(elapsed);

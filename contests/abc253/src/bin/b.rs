@@ -3,16 +3,30 @@
 #![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
-pub fn main() {
-    input! {}
-    todo!("You can solve it!")
+fn main() {
+    input! {
+        h: usize, w: usize,
+        s: [Chars; h]
+    }
+
+    let mut a: Option<(usize, usize)> = None;
+    for i in 0..h {
+        for j in 0..w {
+            if s[i][j] == 'o' {
+                if let Some((x, y)) = a {
+                    let ans = x.abs_diff(i) + y.abs_diff(j);
+                    vis!(ans);
+                } else {
+                    a = Some((i, j));
+                }
+            }
+        }
+    }
 }
 
-use ac_library_rs::math::{crt, inv_mod, pow_mod};
-use indexmap::{indexmap, indexset, IndexMap, IndexSet};
-use itertools::{chain, iproduct, izip, Itertools as _};
+use itertools::{iproduct, izip, Itertools as _};
 use itertools_num::ItertoolsNum as _;
-use roaring::{RoaringBitmap, RoaringTreemap};
+use maplit::{btreemap, btreeset, convert_args, hashmap, hashset};
 use num::{
     bigint::{BigInt, BigUint, ToBigInt as _, ToBigUint as _},
     complex::Complex64,

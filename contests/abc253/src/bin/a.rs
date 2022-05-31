@@ -3,16 +3,18 @@
 #![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
-pub fn main() {
-    input! {}
-    todo!("You can solve it!")
+fn main() {
+    input! {
+        mut a: [usize; 3]
+    }
+    let t = a[1];
+    a.sort();
+    Yn(t == a[1]);
 }
 
-use ac_library_rs::math::{crt, inv_mod, pow_mod};
-use indexmap::{indexmap, indexset, IndexMap, IndexSet};
-use itertools::{chain, iproduct, izip, Itertools as _};
+use itertools::{iproduct, izip, Itertools as _};
 use itertools_num::ItertoolsNum as _;
-use roaring::{RoaringBitmap, RoaringTreemap};
+use maplit::{btreemap, btreeset, convert_args, hashmap, hashset};
 use num::{
     bigint::{BigInt, BigUint, ToBigInt as _, ToBigUint as _},
     complex::Complex64,

@@ -6,12 +6,10 @@ rustc-wrapper = "/usr/local/bin/sccache"
 linker = "rust-lld"
 
 [alias]
-# for cargo-compete
 submit = "compete submit"
 s = "compete submit"
 judge = "compete test"
 j = "compete test"
 
-# for cargo-acx
 clist = "acx clist"
 start = "acx start"

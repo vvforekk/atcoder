@@ -1,2 +1,2 @@
-cargo_compete_home_dir = ''
-open_tasks_print = false
+cargo_compete_home_dir = "/Users/roku/Competitive/atcoder"
+open_tasks_print = true
