@@ -51,7 +51,11 @@ pub fn start() -> anyhow::Result<()> {
         if out.status.success() {
             eprintln!("Created a package for {}", id);
         } else {
-            bail!("failed to execute 'cargo compete new {}'", id);
+            bail!(
+                "failed to execute 'cargo compete new {}' due to `{}`",
+                id,
+                String::from_utf8(out.stderr).unwrap()
+            );
         }
     }
 
