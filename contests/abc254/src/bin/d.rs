@@ -1,44 +1,27 @@
 //! This solution is created by @awpsyrhy
 //! Source of my library is at https://github.com/SaiYS/sail
-#![allow(unused_imports, clippy::needless_range_loop)]
+#![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
 fn main() {
     input! {
-        n: usize, m: usize, k: usize,
+        n: usize
     }
 
-    if k == 0 {
-        let ans = ModInt998244353::new(m).pow(n + 1);
-        vis!(ans.get());
-        return;
-    }
-
-    let mut dp = vec![ModInt998244353::one(); m];
-
-    for _ in 1..n {
-        let acc = Accumulation::from(dp.clone());
-
-        let mut next = vec![];
-        for i in 0..m {
-            let p = acc.range_sum(0..i.saturating_sub(k - 1));
-            let q = if i + k < m {
-                acc.range_sum(min(i + k, m - 1)..m)
-            } else {
-                0.into()
-            };
-            next.push(dp[i] * (p + q));
+    let mut ans = 0usize;
+    for i in 1..=n {
+        let mut k = i;
+        for d in (2..).map(|x| x * x) {
+            if k < d {
+                break;
+            }
+            while k % d == 0 {
+                k /= d;
+            }
         }
-
-        dp = next;
+        ans += (1..).map(|x| x * x).take_while(|&x| k * x <= n).count();
     }
-
-    let mut ans = ModInt998244353::zero();
-    for e in dp {
-        ans += e;
-    }
-
-    vis!(ans.get());
+    vis!(ans);
 }
 
 use itertools::{iproduct, izip, Itertools as _};
@@ -57,7 +40,10 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     thread_rng, Rng, SeedableRng,
 };
-use sail::{accumulate::Accumulation, prelude::*};
+use sail::{
+    prelude::*,
+    prime::sieve::{atkin::SieveOfAtkin, PrimeSieve},
+};
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},

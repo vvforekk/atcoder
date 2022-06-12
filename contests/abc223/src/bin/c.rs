@@ -1,44 +1,30 @@
 //! This solution is created by @awpsyrhy
 //! Source of my library is at https://github.com/SaiYS/sail
-#![allow(unused_imports, clippy::needless_range_loop)]
+#![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
 fn main() {
     input! {
-        n: usize, m: usize, k: usize,
+        n: usize,
+        a: [(f64, f64); n]
     }
 
-    if k == 0 {
-        let ans = ModInt998244353::new(m).pow(n + 1);
-        vis!(ans.get());
-        return;
-    }
+    let c = a.iter().map(|&(x, y)| x / y).collect_vec();
+    let time = Accumulation::from(c).accumulation().to_owned();
+    let mut ans = 0.0;
+    let all = time[n];
 
-    let mut dp = vec![ModInt998244353::one(); m];
-
-    for _ in 1..n {
-        let acc = Accumulation::from(dp.clone());
-
-        let mut next = vec![];
-        for i in 0..m {
-            let p = acc.range_sum(0..i.saturating_sub(k - 1));
-            let q = if i + k < m {
-                acc.range_sum(min(i + k, m - 1)..m)
-            } else {
-                0.into()
-            };
-            next.push(dp[i] * (p + q));
+    for i in 0..n {
+        if time[i + 1] > all / 2.0 {
+            let d = all / 2.0 - time[i];
+            ans += a[i].1 * d;
+            break;
+        } else {
+            ans += a[i].0;
         }
-
-        dp = next;
     }
 
-    let mut ans = ModInt998244353::zero();
-    for e in dp {
-        ans += e;
-    }
-
-    vis!(ans.get());
+    vis!(ans);
 }
 
 use itertools::{iproduct, izip, Itertools as _};
@@ -61,4 +47,5 @@ use sail::{accumulate::Accumulation, prelude::*};
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
+    f64::EPSILON,
 };

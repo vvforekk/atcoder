@@ -5,40 +5,35 @@
 
 fn main() {
     input! {
-        n: usize, m: usize, k: usize,
+        n: usize, m: usize,
+        e: [(Usize1, Usize1); m],
+        q: usize,
+        qs: [(Usize1, usize); q]
     }
 
-    if k == 0 {
-        let ans = ModInt998244353::new(m).pow(n + 1);
-        vis!(ans.get());
-        return;
+    let mut g = vec![Vec::new(); n];
+    for (a, b) in e {
+        g[a].push(b);
+        g[b].push(a);
     }
 
-    let mut dp = vec![ModInt998244353::one(); m];
+    for (x, k) in qs {
+        let mut q = VecDeque::new();
+        q.push_back((x, 0));
 
-    for _ in 1..n {
-        let acc = Accumulation::from(dp.clone());
-
-        let mut next = vec![];
-        for i in 0..m {
-            let p = acc.range_sum(0..i.saturating_sub(k - 1));
-            let q = if i + k < m {
-                acc.range_sum(min(i + k, m - 1)..m)
-            } else {
-                0.into()
-            };
-            next.push(dp[i] * (p + q));
+        let mut gr = vec![];
+        while let Some((cur, dist)) = q.pop_front() {
+            gr.push(cur);
+            for &next in g[cur].iter() {
+                if dist < k {
+                    q.push_back((next, dist + 1));
+                }
+            }
         }
 
-        dp = next;
+        let ans: usize = gr.into_iter().unique().map(|x| x + 1).sum();
+        vis!(ans);
     }
-
-    let mut ans = ModInt998244353::zero();
-    for e in dp {
-        ans += e;
-    }
-
-    vis!(ans.get());
 }
 
 use itertools::{iproduct, izip, Itertools as _};
@@ -57,7 +52,7 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     thread_rng, Rng, SeedableRng,
 };
-use sail::{accumulate::Accumulation, prelude::*};
+use sail::prelude::*;
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},

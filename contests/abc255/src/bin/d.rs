@@ -1,44 +1,27 @@
 //! This solution is created by @awpsyrhy
 //! Source of my library is at https://github.com/SaiYS/sail
-#![allow(unused_imports, clippy::needless_range_loop)]
+#![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
 fn main() {
     input! {
-        n: usize, m: usize, k: usize,
+        n: usize, q: usize,
+        mut a: [i64; n]
     }
 
-    if k == 0 {
-        let ans = ModInt998244353::new(m).pow(n + 1);
-        vis!(ans.get());
-        return;
-    }
+    a.sort_unstable();
+    let acc = Accumulation::from(a.clone());
 
-    let mut dp = vec![ModInt998244353::one(); m];
-
-    for _ in 1..n {
-        let acc = Accumulation::from(dp.clone());
-
-        let mut next = vec![];
-        for i in 0..m {
-            let p = acc.range_sum(0..i.saturating_sub(k - 1));
-            let q = if i + k < m {
-                acc.range_sum(min(i + k, m - 1)..m)
-            } else {
-                0.into()
-            };
-            next.push(dp[i] * (p + q));
+    for _ in 0..q {
+        input! {
+            x: i64,
         }
 
-        dp = next;
+        let d = a.upper_bound(&x);
+        let ans =
+            x * d as i64 - acc.range_sum(0..d) + acc.range_sum(d..n) - x * (n as i64 - d as i64);
+        vis!(ans);
     }
-
-    let mut ans = ModInt998244353::zero();
-    for e in dp {
-        ans += e;
-    }
-
-    vis!(ans.get());
 }
 
 use itertools::{iproduct, izip, Itertools as _};
@@ -62,3 +45,4 @@ use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
 };
+use superslice::Ext;

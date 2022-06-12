@@ -1,44 +1,42 @@
 //! This solution is created by @awpsyrhy
 //! Source of my library is at https://github.com/SaiYS/sail
-#![allow(unused_imports, clippy::needless_range_loop)]
+#![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
 fn main() {
     input! {
-        n: usize, m: usize, k: usize,
+        n: usize, m: usize,
+        e: [(Usize1, Usize1); m]
     }
 
-    if k == 0 {
-        let ans = ModInt998244353::new(m).pow(n + 1);
-        vis!(ans.get());
-        return;
+    let mut g = vec![Vec::new(); n];
+    let mut d_in = vec![0usize; n];
+    for (a, b) in e {
+        g[a].push(b);
+        d_in[b] += 1;
     }
 
-    let mut dp = vec![ModInt998244353::one(); m];
+    let mut s = (0..n)
+        .filter(|&x| d_in[x] == 0)
+        .map(|x| Reverse(x))
+        .collect::<BinaryHeap<_>>();
+    let mut ans = Vec::new();
 
-    for _ in 1..n {
-        let acc = Accumulation::from(dp.clone());
-
-        let mut next = vec![];
-        for i in 0..m {
-            let p = acc.range_sum(0..i.saturating_sub(k - 1));
-            let q = if i + k < m {
-                acc.range_sum(min(i + k, m - 1)..m)
-            } else {
-                0.into()
-            };
-            next.push(dp[i] * (p + q));
+    while let Some(Reverse(cur)) = s.pop() {
+        ans.push(cur + 1);
+        for &next in g[cur].iter() {
+            d_in[next] -= 1;
+            if d_in[next] == 0 {
+                s.push(Reverse(next));
+            }
         }
-
-        dp = next;
     }
 
-    let mut ans = ModInt998244353::zero();
-    for e in dp {
-        ans += e;
+    if d_in.into_iter().all(|x| x == 0) {
+        vis!(ans);
+    } else {
+        vis!(-1);
     }
-
-    vis!(ans.get());
 }
 
 use itertools::{iproduct, izip, Itertools as _};
@@ -57,8 +55,9 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     thread_rng, Rng, SeedableRng,
 };
-use sail::{accumulate::Accumulation, prelude::*};
+use sail::prelude::*;
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
+    process::exit,
 };

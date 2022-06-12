@@ -1,44 +1,34 @@
 //! This solution is created by @awpsyrhy
 //! Source of my library is at https://github.com/SaiYS/sail
-#![allow(unused_imports, clippy::needless_range_loop)]
+#![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
 fn main() {
     input! {
-        n: usize, m: usize, k: usize,
+        n: usize, m: usize,
+        s: [i64; n - 1],
+        x: [i64; m]
     }
 
-    if k == 0 {
-        let ans = ModInt998244353::new(m).pow(n + 1);
-        vis!(ans.get());
-        return;
-    }
+    let set: HashSet<_> = x.iter().copied().collect();
+    let mut ans = 0usize;
+    for i in 0..n {
+        for &x in x.iter() {
+            let mut a = vec![i64::MAX; n];
+            a[i] = x;
+            for j in i + 1..n {
+                a[j] = s[j - 1] - a[j - 1];
+            }
+            for j in (0..i).rev() {
+                a[j] = s[j] - a[j + 1];
+            }
 
-    let mut dp = vec![ModInt998244353::one(); m];
-
-    for _ in 1..n {
-        let acc = Accumulation::from(dp.clone());
-
-        let mut next = vec![];
-        for i in 0..m {
-            let p = acc.range_sum(0..i.saturating_sub(k - 1));
-            let q = if i + k < m {
-                acc.range_sum(min(i + k, m - 1)..m)
-            } else {
-                0.into()
-            };
-            next.push(dp[i] * (p + q));
+            let c = a.iter().filter(|&x| set.contains(x)).count();
+            ans = max(ans, c);
         }
-
-        dp = next;
     }
 
-    let mut ans = ModInt998244353::zero();
-    for e in dp {
-        ans += e;
-    }
-
-    vis!(ans.get());
+    vis!(ans);
 }
 
 use itertools::{iproduct, izip, Itertools as _};
@@ -57,7 +47,7 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     thread_rng, Rng, SeedableRng,
 };
-use sail::{accumulate::Accumulation, prelude::*};
+use sail::prelude::*;
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},

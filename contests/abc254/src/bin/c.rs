@@ -1,44 +1,36 @@
 //! This solution is created by @awpsyrhy
 //! Source of my library is at https://github.com/SaiYS/sail
-#![allow(unused_imports, clippy::needless_range_loop)]
+#![allow(unused_imports)]
 #![warn(clippy::dbg_macro)]
 
 fn main() {
     input! {
-        n: usize, m: usize, k: usize,
+        n: usize, k: usize,
+        a: [usize; n]
     }
 
-    if k == 0 {
-        let ans = ModInt998244353::new(m).pow(n + 1);
-        vis!(ans.get());
-        return;
-    }
-
-    let mut dp = vec![ModInt998244353::one(); m];
-
-    for _ in 1..n {
-        let acc = Accumulation::from(dp.clone());
-
-        let mut next = vec![];
-        for i in 0..m {
-            let p = acc.range_sum(0..i.saturating_sub(k - 1));
-            let q = if i + k < m {
-                acc.range_sum(min(i + k, m - 1)..m)
+    let mut b = vec![0; n];
+    for i in 0..k {
+        let mut c = vec![];
+        for j in 0.. {
+            let x = j * k + i;
+            if x < n {
+                c.push(a[x]);
             } else {
-                0.into()
-            };
-            next.push(dp[i] * (p + q));
+                break;
+            }
         }
 
-        dp = next;
+        for (j, e) in c.into_iter().sorted().enumerate() {
+            b[j * k + i] = e;
+        }
     }
 
-    let mut ans = ModInt998244353::zero();
-    for e in dp {
-        ans += e;
-    }
+    // dbg!(&b);
 
-    vis!(ans.get());
+    let mut c = b.clone();
+    c.sort();
+    Yn(b == c);
 }
 
 use itertools::{iproduct, izip, Itertools as _};
@@ -57,7 +49,7 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     thread_rng, Rng, SeedableRng,
 };
-use sail::{accumulate::Accumulation, prelude::*};
+use sail::prelude::*;
 use std::{
     cmp::{max, min, Reverse},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
