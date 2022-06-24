@@ -2,8 +2,33 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize,
+        a: [usize; n],
+        b: [usize; n],
+    }
+
+    let mut dp = vec![ModInt998244353::one(); 3001];
+
+    for i in 0..n {
+        let mut s = vec![ModInt998244353::zero(); 3001];
+        // for j in a[i]..=b[i] {
+        //     s[j] = dp[j];
+        // }
+        s[a[i]..(b[i] + 1)].copy_from_slice(&dp[a[i]..(b[i] + 1)]);
+
+        let mut next = vec![];
+        let mut cur = ModInt998244353::zero();
+        for j in s {
+            cur += j;
+            next.push(cur);
+        }
+
+        dp = next;
+    }
+
+    let ans = dp.last().unwrap();
+    vis!(ans.get());
 }
 
 use std::{

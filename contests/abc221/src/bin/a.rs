@@ -2,8 +2,12 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+            a: u32, b: u32
+    }
+
+    let ans = 32usize.pow(a - b);
+    vis!(ans);
 }
 
 use std::{

@@ -2,8 +2,14 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize, d: usize
+    }
+
+    for up in 0..=d {
+        let down = d - up;
+        
+    }
 }
 
 use std::{

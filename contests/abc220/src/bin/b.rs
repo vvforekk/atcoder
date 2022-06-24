@@ -2,8 +2,27 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        k: usize,
+        a: Digits, b: Digits,
+    }
+
+    let mut i = 1;
+    let mut aa = 0usize;
+    for d in a.into_iter().rev() {
+        aa += d * i;
+        i *= k;
+    }
+
+    let mut i = 1;
+    let mut bb = 0usize;
+    for d in b.into_iter().rev() {
+        bb += d * i;
+        i *= k;
+    }
+
+    let cc = aa * bb;
+    vis!(cc);
 }
 
 use std::{

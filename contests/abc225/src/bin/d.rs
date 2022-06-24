@@ -23,7 +23,6 @@ fn main() {
                 }
                 prev[y] = Some(x);
                 succ[x] = Some(y);
-
             }
             2 => {
                 input! {
@@ -54,7 +53,14 @@ fn main() {
     }
 }
 
-use sail::prelude::*;
+use std::{
+    cmp::{max, min, Reverse},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque},
+    f64::consts::PI,
+    io::{Read, Write},
+    str::FromStr,
+    string::ToString,
+};
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools};
@@ -78,11 +84,4 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     Rng, SeedableRng,
 };
-use std::{
-    cmp::{max, min, Reverse},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque},
-    f64::consts::PI,
-    io::{Read, Write},
-    str::FromStr,
-    string::ToString,
-};
+use sail::prelude::*;

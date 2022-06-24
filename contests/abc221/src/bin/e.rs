@@ -2,8 +2,18 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize, a: [usize; n]
+    }
+
+
+    let mut ans = 0usize;
+    let mut cur = 0usize;
+    for (i, x) in a.into_iter().enumerate().sorted_by_key(|x| x.1) {
+        ans += i - cur;
+        cur = i;
+    }
+
 }
 
 use std::{

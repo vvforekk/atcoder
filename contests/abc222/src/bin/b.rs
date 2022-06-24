@@ -2,8 +2,13 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize, p: usize,
+        a: [usize; n]
+    }
+
+    let ans = a.into_iter().filter(|&x| x < p).count();
+    vis!(ans);
 }
 
 use std::{

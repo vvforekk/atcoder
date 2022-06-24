@@ -1,0 +1,102 @@
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+strip = true
+
+[package]
+name = "abc220"
+version = "0.1.0"
+edition = "2021"
+
+[package.metadata.cargo-compete.bin]
+abc220-a = { alias = "a", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_a" }
+abc220-b = { alias = "b", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_b" }
+abc220-c = { alias = "c", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_c" }
+abc220-d = { alias = "d", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_d" }
+abc220-e = { alias = "e", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_e" }
+abc220-f = { alias = "f", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_f" }
+abc220-g = { alias = "g", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_g" }
+abc220-h = { alias = "h", problem = "https://atcoder.jp/contests/abc220/tasks/abc220_h" }
+
+[[bin]]
+name = "abc220-a"
+path = "src/bin/a.rs"
+
+[[bin]]
+name = "abc220-b"
+path = "src/bin/b.rs"
+
+[[bin]]
+name = "abc220-c"
+path = "src/bin/c.rs"
+
+[[bin]]
+name = "abc220-d"
+path = "src/bin/d.rs"
+
+[[bin]]
+name = "abc220-e"
+path = "src/bin/e.rs"
+
+[[bin]]
+name = "abc220-f"
+path = "src/bin/f.rs"
+
+[[bin]]
+name = "abc220-g"
+path = "src/bin/g.rs"
+
+[[bin]]
+name = "abc220-h"
+path = "src/bin/h.rs"
+
+[dependencies]
+num = "0.4.0"
+num-bigint = "0.4.3"
+num-complex = "0.4.0"
+num-integer = "0.1.42"
+num-iter = "0.1.40"
+num-rational = "0.4.0"
+num-traits = "0.2.11"
+num-derive = "0.3.0"
+ndarray = "0.15.4"
+nalgebra = "0.31.0"
+# alga = "0.9.3"
+libm = "0.2.1"
+rand = { version = "0.8.5", features = ["small_rng"] }
+getrandom = "0.2.6"
+rand_chacha = "0.3.1"
+rand_core = "0.6.3"
+rand_hc = "0.3.1"
+rand_pcg = "0.3.1"
+rand_distr = "0.4.3"
+# petgraph = "0.5.0"
+indexmap = "1.3.2"
+regex = "1.3.6"
+lazy_static = "1.4.0"
+ordered-float = "3.0.0"
+ascii = "1.0.0"
+permutohedron = "0.2.4"
+superslice = "1.0.0"
+itertools = "0.10.3"
+itertools-num = "0.1.3"
+maplit = "1.0.2"
+either = "1.5.3"
+im-rc = "15.0.0"
+# fixedbitset = "0.2.0"
+# bitset-fixed = "0.1.0"
+proconio = { version = "0.4.3", features = ["derive"] }
+# text_io = "0.1.8"
+# whiteread = "0.5.0"
+# rustc-hash = "1.1.0"
+smallvec = "1.2.0"
+
+once_cell = "1.12.0"
+priority-queue = "1.2.2"
+roaring = "0.9.0"
+
+ac-library-rs = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
+sail = { path = "./../../../sail" }
+
+[dev-dependencies]

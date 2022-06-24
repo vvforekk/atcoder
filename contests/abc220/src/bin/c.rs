@@ -2,8 +2,22 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize, a: [usize; n], x: usize,
+    }
+
+    let s = a.iter().sum::<usize>();
+    let t = x / s;
+
+    let rest = x - s * t;
+    let mut u = 0usize;
+    for i in 0..n {
+        u += a[i];
+        if u > rest {
+            vis!(t * n + i + 1);
+            return;
+        }
+    }
 }
 
 use std::{

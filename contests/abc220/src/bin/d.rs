@@ -2,8 +2,25 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize, a: [usize; n]
+    }
+
+    let mut dp = vec![vec![ModInt998244353::zero(); 10]; n];
+    dp[0][a[0]] = 1u8.into();
+    for i in 1..n {
+        for j in 0..10 {
+            let l = dp[i - 1][j];
+            dp[i][(a[i] + j) % 10] += l;
+            dp[i][(a[i] * j) % 10] += l;
+        }
+    }
+
+    // dbg!(&dp);
+
+    for i in &dp[n - 1] {
+        vis!(i.get());
+    }
 }
 
 use std::{

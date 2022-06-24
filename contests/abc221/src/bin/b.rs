@@ -2,8 +2,21 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        s: Chars, t: Chars
+    }
+
+    let mut ans = s == t;
+    let n = s.len();
+    for i in 0..n - 1 {
+        let mut ss = s.clone();
+        ss.swap(i, i + 1);
+        if ss == t {
+            ans = true;
+        }
+    }
+
+    Yn(ans);
 }
 
 use std::{

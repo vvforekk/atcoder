@@ -2,8 +2,12 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        a: i64, b: i64, c: i64,
+    }
+
+    let ans = (a..=b).find(|x| x.is_multiple_of(&c)).unwrap_or(-1);
+    vis!(ans);
 }
 
 use std::{

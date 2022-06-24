@@ -2,8 +2,11 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize,
+    }
+
+    println!("{:0>4}", n);
 }
 
 use std::{

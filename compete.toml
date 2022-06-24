@@ -21,37 +21,40 @@ test-suite = "{{ manifest_dir }}/testcases/{{ bin_alias }}.yml"
 #open = '["emacsclient", "-n"] + (.paths | map([.src, .test_suite]) | flatten)'
 
 [template]
-src = '''//! This code is created by @awpsyrhy
-//! Source of my library is at https://github.com/SaiYS/sail
+src = '''#![warn(clippy::dbg_macro)]
 #![allow(unused_imports, clippy::needless_range_loop)]
-#![warn(clippy::dbg_macro)]
 
 fn main() {
     input! {}
     todo!("You can solve it!")
 }
 
-use sail::prelude::*;
-use itertools::{iproduct, izip, Itertools as _};
+use std::{
+    cmp::{max, min, Reverse},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
+};
+
+use ac_library_rs::math::{crt, inv_mod, pow_mod};
+use indexmap::{indexmap, indexset, IndexMap, IndexSet};
+use itertools::{chain, iproduct, izip, Itertools as _};
 use itertools_num::ItertoolsNum as _;
-use maplit::{btreemap, btreeset, convert_args, hashmap, hashset};
 use num::{
-    bigint::{BigInt, BigUint, ToBigInt, ToBigUint},
+    bigint::{BigInt, BigUint, ToBigInt as _, ToBigUint as _},
     complex::Complex64,
     integer::{binomial, gcd, gcd_lcm, lcm, multinomial, Integer},
     rational::{Ratio, Rational64},
     traits::{One, Pow, Zero},
 };
+use priority_queue::{DoublePriorityQueue, PriorityQueue};
 use rand::{
     random,
     rngs::{SmallRng, ThreadRng},
     seq::{IteratorRandom, SliceRandom},
     thread_rng, Rng, SeedableRng,
 };
-use std::{
-    cmp::{max, min, Reverse},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
-};
+use roaring::{RoaringBitmap, RoaringTreemap};
+use sail::prelude::*;
+use superslice::{Ext as _, Ext2 as _};
 '''
 
 [template.new]
@@ -66,7 +69,7 @@ opt-level = 3
 
 [release]
 strip = true
-lto = true
+# lto = true
 '''
 dependencies = '''
 num = "0.4.0"
@@ -77,10 +80,10 @@ num-iter = "0.1.40"
 num-rational = "0.4.0"
 num-traits = "0.2.11"
 num-derive = "0.3.0"
-# ndarray = "0.13.0"
-# nalgebra = "0.20.0"
+ndarray = "0.15.4"
+nalgebra = "0.31.0"
 # alga = "0.9.3"
-# libm = "0.2.1"
+libm = "0.2.1"
 rand = { version = "0.8.5", features = ["small_rng"] }
 getrandom = "0.2.6"
 rand_chacha = "0.3.1"
@@ -99,15 +102,19 @@ superslice = "1.0.0"
 itertools = "0.10.3"
 itertools-num = "0.1.3"
 maplit = "1.0.2"
-# either = "1.5.3"
+either = "1.5.3"
 im-rc = "15.0.0"
 # fixedbitset = "0.2.0"
 # bitset-fixed = "0.1.0"
-# proconio = { version = "0.4.3", features = ["derive"] }
+proconio = { version = "0.4.3", features = ["derive"] }
 # text_io = "0.1.8"
 # whiteread = "0.5.0"
 # rustc-hash = "1.1.0"
-# smallvec = "1.2.0"
+smallvec = "1.2.0"
+
+once_cell = "1.12.0"
+priority-queue = "1.2.2"
+roaring = "0.9.0"
 
 ac-library-rs = { git = "https://github.com/rust-lang-ja/ac-library-rs" }
 sail = { path = "./../../../sail" }

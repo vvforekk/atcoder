@@ -26,7 +26,17 @@ fn main() {
     vis!(ans);
 }
 
-use sail::prelude::*;
+use std::{
+    cmp::{max, min, Reverse},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
+    f64::{
+        consts::{FRAC_2_PI, PI},
+        EPSILON,
+    },
+    io::{Read, Write},
+    str::FromStr,
+    string::ToString,
+};
 
 use im_rc::{ordmap, ordset, OrdMap, OrdSet};
 use itertools::{iproduct, izip, Itertools};
@@ -50,14 +60,4 @@ use rand::{
     seq::{IteratorRandom, SliceRandom},
     Rng, SeedableRng,
 };
-use std::{
-    cmp::{max, min, Reverse},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, VecDeque},
-    f64::{
-        consts::{FRAC_2_PI, PI},
-        EPSILON,
-    },
-    io::{Read, Write},
-    str::FromStr,
-    string::ToString,
-};
+use sail::prelude::*;

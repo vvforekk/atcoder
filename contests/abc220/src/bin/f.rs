@@ -2,8 +2,26 @@
 #![allow(unused_imports, clippy::needless_range_loop)]
 
 fn main() {
-    input! {}
-    todo!("You can solve it!")
+    input! {
+        n: usize,
+        e: [(Usize1, Usize1); n - 1]
+    }
+
+    let mut g = vec![Vec::new(); n];
+    for (a, b) in e {
+        g[a].push(b);
+        g[b].push(a);
+    }
+
+    let mut ans = vec![0usize; n];
+
+    let mut q = VecDeque::new();
+    q.push_back(0);
+    let mut visited = vec![false; n];
+    while let Some(cur) = q.pop_front() {
+        visited[cur] = true;
+        let children = g[cur].iter().filter(|&&x| !visited[x]).collect_vec();
+    }
 }
 
 use std::{
